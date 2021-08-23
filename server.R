@@ -1,5 +1,6 @@
 library(shiny)
 library(tidyverse)
+library(thematic)
 
 Notes <- read_csv('Notes.csv')
 
@@ -78,7 +79,7 @@ shinyServer(
           x = "k"
         ) +
         scale_x_continuous(breaks = 0:11) +
-        ylim(-1.2, 1.2)
+        ylim(-0.5, 1.5)
     }, res = 96)
   
     output$DFTplot <- renderPlot({
