@@ -6,21 +6,53 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = TRUE)
 ```
+## Prerequisites  
 
-## R Markdown
+We make use of  the **tidyverse** packages:
 
 ```{r}
 library(tidyverse)
 ```
 
+## Introduction  
 
-```{r cars}
+This document details the construction the dataset *Notes.csv* used in creating our [web application](https://aubinbannwarth.shinyapps.io/pcs_dft_widget/). The dataset is displayed below for reference:
+
+```{r}
+read_csv('Notes.csv')
+```
+
+Each row corresponds to one of the 12 pitch classes in the western [twelve tone system](https://en.wikipedia.org/wiki/12_equal_temperament), and the variables are as follows:
+
+* `Class` is the pitch class. It takes values 0 through 11, with C = 0, C# = 1, D = 2, etc... You can think of this as an ordered-encoding for a multi-level ordered categorical variable. This makes sense because the pitch classes are indeed on a ordered scale from lowest to highest.  
+
+* `Name` lists one or more of the common English language names for the pitch class, corresponding to the names used by musicians. Where more than one name is listed, for example C/B#, they are [enharmonic spellings](https://en.wikipedia.org/wiki/Enharmonic) and represent the same pitch class.  
+
+* `c5` also takes values 0 to 11 and corresponds to the pitch class' position in a chain of consecutive pitch classes obtained by repeated transpositions by an interval of fifth, starting on C = 0.  
+
+* `c5_x` and `c5_y` are the actual coordinates of the pitch class on a unit circle of fifths centered at the origin, with C = 0 at (0, 1) as is the typical convention. 
+
+This simple data set will allow us to:
+
+* Create a reactive plot showing the circle of fifths.  
+* Allow users to construct any pitch class set by clicking on the appropriate notes on the circle.
+* Compute the characteristic function and discrete fourier transform for the selection and display their real parts on two additional plots. 
+
+## Construction
+
+Let's begin by creating a first data frame, `diatonic`, containing only the 7 diatonic pitch classes in the key of C (white keys on the piano). They are named A-G, and we enter their corresponding pitch classes manually:
+```{r}
 diatonic <- tibble(
   "Class" = c(9, 11, 0, 2, 4, 5, 7), 
   "Name" =  LETTERS[1:7])
+```
 
+Next, we can create two additional frames, `sharps` and `flats`, containing the altered notes. For `sharps`, we simply append a *#* at the end of the `Name`, and add 1 (mod 12) to the `Class`. For `flats`, we append a *b* after the `Name` and subtract 1 (mod 12) from the `Class`:
+
+
+```{r }
 sharps <- diatonic %>%
   transmute(Class = (Class + 1) %% 12,
          sharps = str_c(Name, "#"), )
@@ -30,6 +62,8 @@ flats <- diatonic %>%
          flats = str_c(Name, 'b'))
 ```
 
+
+Next, we join these tables together, and collect the note names into a single column:
 
 ```{r}
 Notes <- flats %>% 
@@ -44,6 +78,12 @@ Notes <- flats %>%
   arrange(Class)
 ```
 
+Here is the result:
+```{r}
+Notes
+```
+
+We see that we have successfully associated each pitch class with the correct musical names. Next, we will add the next three columns corresponding to the pitch class' position in the circle of fifths. We create a `c5_classes` frame to that effect and then join it with `Notes`. 
 
 ```{r}
 c5_classes <- 
@@ -53,21 +93,31 @@ c5_classes <-
          c5_y = cos(2*pi*c5_order/12))
 
 Notes <- Notes %>% left_join(c5_classes, by = "Class")
-
 ```
 
+Here is our final result:
 ```{r}
+Notes
+```
+
+Lastly, we may try to plot an example to see if we have achieved what we wanted. Let's create an arbitrary `pcs` variable containing some pitch-class set, and display its position on the circle:
+
+```{r, fig.width = 6, fig.asp = 0.618, out.width = "70%", fig.align = "center"}
 pcs <- c(0, 3, 7, 11)
 
 Notes %>% mutate(Selected = Class %in% pcs) %>%
   ggplot() +
-  geom_text(aes(c5_x, c5_y, label = Name, color =Selected), show.legend = FALSE) +
-  labs(
-    title = 'Circle of Fifths',
-    x = NULL, y = NULL)
+  geom_text(aes(c5_x, c5_y, label = Name, color = Selected), show.legend = FALSE) +
+  labs(title = 'Circle of Fifths', x = NULL, y = NULL) +
+  coord_fixed() +
+  theme_void() +
+  xlim(-1.2, 1.2)
 ```
 
+Great! We can use the `write_csv()` function to save our dataset:
 
-```{r}
+```{r, eval = FALSE}
 write_csv(Notes, 'Notes.csv')
 ```
+
+
