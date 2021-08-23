@@ -1,0 +1,73 @@
+---
+title: "Construction of Notes.csv"
+author: "Aubin Bannwarth"
+date: "23/08/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r cars}
+diatonic <- tibble(
+  "Class" = c(9, 11, 0, 2, 4, 5, 7), 
+  "Name" =  LETTERS[1:7])
+
+sharps <- diatonic %>%
+  transmute(Class = (Class + 1) %% 12,
+         sharps = str_c(Name, "#"), )
+
+flats <- diatonic %>%
+  transmute(Class = (Class - 1) %% 12,
+         flats = str_c(Name, 'b'))
+```
+
+
+```{r}
+Notes <- flats %>% 
+  full_join(sharps, by = "Class") %>%
+  full_join(diatonic, by = "Class") %>%
+  mutate(across(-Class, str_replace_na)) %>%
+  mutate(Name = str_c(Name, sharps, flats, sep = "/")) %>%
+  mutate(Name = str_remove_all(Name, "NA/")) %>% 
+  mutate(Name = str_remove_all(Name, "/NA")) %>%
+  mutate(Name = str_remove_all(Name, "/$")) %>%
+  select(Class, Name) %>%
+  arrange(Class)
+```
+
+
+```{r}
+c5_classes <- 
+  tibble("Class"  =  (5*(0:11)) %% 12,
+         "c5_order" = 0:11) %>%
+  mutate(c5_x = -sin(2*pi*c5_order/12),
+         c5_y = cos(2*pi*c5_order/12))
+
+Notes <- Notes %>% left_join(c5_classes, by = "Class")
+
+```
+
+```{r}
+pcs <- c(0, 3, 7, 11)
+
+Notes %>% mutate(Selected = Class %in% pcs) %>%
+  ggplot() +
+  geom_text(aes(c5_x, c5_y, label = Name, color =Selected), show.legend = FALSE) +
+  labs(
+    title = 'Circle of Fifths',
+    x = NULL, y = NULL)
+```
+
+
+```{r}
+write_csv(Notes, 'Notes.csv')
+```
