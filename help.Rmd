@@ -88,7 +88,7 @@ The characteristic function $f_A$ of the pitch class set $A$ is the map:
 $$f_A: \mathbb{Z}_{12} \rightarrow \mathbb{C}: k \mapsto \begin{cases} 1, & k \in  A\\ 0, & k \notin A \end{cases}$$ 
 It takes value 1 if $k$ is in our pitch class set, and zero otherwise. In the app, if you have selected $A = \{0, 4, 7\}$ as above, you should see that the characteristic function in the bottom left plot is exactly one at $k \in \{0, 4, 7\}$ and zero at all other integer values.  
 
-## Discret Fourier transform  
+## Discrete Fourier transform  
 
 From the characteristic function $f_A$ of the pitch class set $A$, we can compute the **discrete Fourier transform** (o[r DFT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform)), $F_A$. This is another map fom  $\mathbb{Z}_{12}$ to $\mathbb{C}$, defined as follows:
 
