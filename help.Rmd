@@ -90,7 +90,7 @@ It takes value 1 if $k$ is in our pitch class set, and zero otherwise. In the ap
 
 ## Discrete Fourier transform  
 
-From the characteristic function $f_A$ of the pitch class set $A$, we can compute the **discrete Fourier transform** (o[r DFT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform)), $F_A$. This is another map fom  $\mathbb{Z}_{12}$ to $\mathbb{C}$, defined as follows:
+From the characteristic function $f_A$ of the pitch class set $A$, we can compute the **discrete Fourier transform** (or [DFT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform)), $F_A$. This is another map fom  $\mathbb{Z}_{12}$ to $\mathbb{C}$, defined as follows:
 
 $$ F_A: \mathbb{Z}_{12} \rightarrow \mathbb{C}: x \mapsto \sum_{k \in \mathbb{Z}_{12}}f_A(k)e^{-(2i\pi kx)/12}$$
 This allows us to then express our original characteristic function in terms of its Fourier components  using the inverse Fourier transform:
@@ -100,7 +100,7 @@ Even though we have defined $f_A$ and $F_A$ on $\mathbb{Z}_{12}$, we can easily 
 
 ## The circle of fifths
 
-The [circle of fifths](https://en.wikipedia.org/wiki/Circle_of_fifths) is a well known construct in music theory, used to study harmonic movement and the relationship between different keys. Two pitch classes $k_0$ and $k_1$ are said to be a fifth apart if 
+The [circle of fifths](https://en.wikipedia.org/wiki/Circle_of_fifths) is a well known construct in music theory, used to study harmonic movement and the relationship between different keys. A pitch class $k_1$ is said to be a fifth above a pitch class $k_0$ if  
 $$k_1 - k_0 = 7 \mod 12.$$
 
 If we define $k_0 = 0$, we can then define a sequence of consecutive fifths as follows:
@@ -110,7 +110,7 @@ Note that $k_{12}=k_0$ so there's no need to go further.
 The sequence thus obtained is 
 $$(k_0, k_1, ..., k_{11}) = (0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5).$$
 
-The **circle of fifths** maps each $k_m$ to a unique position on the unit circle according to the fomula
+The **circle of fifths** maps each $k_m$ to a unique position on the unit circle as follows:
 
 $$k_m \mapsto ie^{-(2i\pi m)/12},$$
 

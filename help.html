@@ -271,16 +271,17 @@ pre code {
 </div>
 <div id="discrete-fourier-transform" class="section level2">
 <h2>Discrete Fourier transform</h2>
-<p>From the characteristic function <span class="math inline">\(f_A\)</span> of the pitch class set <span class="math inline">\(A\)</span>, we can compute the <strong>discrete Fourier transform</strong> (o<a href="https://en.wikipedia.org/wiki/Discrete_Fourier_transform">r DFT</a>), <span class="math inline">\(F_A\)</span>. This is another map fom <span class="math inline">\(\mathbb{Z}_{12}\)</span> to <span class="math inline">\(\mathbb{C}\)</span>, defined as follows:</p>
+<p>From the characteristic function <span class="math inline">\(f_A\)</span> of the pitch class set <span class="math inline">\(A\)</span>, we can compute the <strong>discrete Fourier transform</strong> (or <a href="https://en.wikipedia.org/wiki/Discrete_Fourier_transform">DFT</a>), <span class="math inline">\(F_A\)</span>. This is another map fom <span class="math inline">\(\mathbb{Z}_{12}\)</span> to <span class="math inline">\(\mathbb{C}\)</span>, defined as follows:</p>
 <p><span class="math display">\[ F_A: \mathbb{Z}_{12} \rightarrow \mathbb{C}: x \mapsto \sum_{k \in \mathbb{Z}_{12}}f_A(k)e^{-(2i\pi kx)/12}\]</span> This allows us to then express our original characteristic function in terms of its Fourier components using the inverse Fourier transform:</p>
 <p><span class="math display">\[ f_A(k) = \frac{1}{12}\sum_{x\in\mathbb{Z}_{12}}F_A(x)e^{+(2i\pi kx)/12}.\]</span> Even though we have defined <span class="math inline">\(f_A\)</span> and <span class="math inline">\(F_A\)</span> on <span class="math inline">\(\mathbb{Z}_{12}\)</span>, we can easily extend their definition using the above expressions to the entire real line. The real parts of these extensions are shown on the plots at the bottom of the app as they illustrate the decomposition into various frequencies a lot better.</p>
 </div>
 <div id="the-circle-of-fifths" class="section level2">
 <h2>The circle of fifths</h2>
-<p>The <a href="https://en.wikipedia.org/wiki/Circle_of_fifths">circle of fifths</a> is a well known construct in music theory, used to study harmonic movement and the relationship between different keys. Two pitch classes <span class="math inline">\(k_0\)</span> and <span class="math inline">\(k_1\)</span> are said to be a fifth apart if <span class="math display">\[k_1 - k_0 = 7 \mod 12.\]</span></p>
+<p>The <a href="https://en.wikipedia.org/wiki/Circle_of_fifths">circle of fifths</a> is a well known construct in music theory, used to study harmonic movement and the relationship between different keys. A pitch class <span class="math inline">\(k_1\)</span> is said to be a fifth above a pitch class <span class="math inline">\(k_0\)</span> if<br />
+<span class="math display">\[k_1 - k_0 = 7 \mod 12.\]</span></p>
 <p>If we define <span class="math inline">\(k_0 = 0\)</span>, we can then define a sequence of consecutive fifths as follows:</p>
 <p><span class="math display">\[k_{m+1} = (k_m + 7)\mod 12,\, 0\leq m \leq 10\]</span> Note that <span class="math inline">\(k_{12}=k_0\)</span> so there’s no need to go further. The sequence thus obtained is <span class="math display">\[(k_0, k_1, ..., k_{11}) = (0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5).\]</span></p>
-<p>The <strong>circle of fifths</strong> maps each <span class="math inline">\(k_m\)</span> to a unique position on the unit circle according to the fomula</p>
+<p>The <strong>circle of fifths</strong> maps each <span class="math inline">\(k_m\)</span> to a unique position on the unit circle as follows:</p>
 <p><span class="math display">\[k_m \mapsto ie^{-(2i\pi m)/12},\]</span></p>
 <p>or, in terms of coordinates <span class="math inline">\((x_m, y_m)\)</span> and real-valued functions:</p>
 <p><span class="math display">\[k_m \mapsto (x_m, y_m) = \left(\sin(2\pi m/12),\, \cos(2\pi  m/12)\right).\]</span></p>
