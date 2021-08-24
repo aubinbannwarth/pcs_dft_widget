@@ -120,4 +120,6 @@ $$k_m \mapsto (x_m, y_m) = \left(\sin(2\pi m/12),\, \cos(2\pi  m/12)\right).$$
 
 ## Further reading
 
-In addition to the links above, you can find more info on the use of the discrete Fourier transform in music theory in [this book](https://www.springer.com/gp/book/9783319455808).
+In addition to the links above, you can find more info on the use of the discrete Fourier transform in music theory in [this book](https://www.springer.com/gp/book/9783319455808).  
+
+You can also visit the [Github repository](https://github.com/aubinbannwarth/pcs_dft_widget) for this project to have a look at the source code for the app (and this document) and more.
