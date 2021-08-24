@@ -11,4 +11,5 @@ In this repository, you will find:
 * The *Notes.csv* data set used in the code in *server.R*.
 * A *dataset_construction.Rmd* file  and compiled *dataset_construction.html* file, detailing the creation of the *Notes.csv* data set. This document is visible [at this address](https://aubinbannwarth.github.io/pcs_dft_widget/dataset_construction.html).
 * A *help.Rmd* file  and compiled *help.html* file, providing instructions on how to use the app. This document is visible [at this address](https://aubinbannwarth.github.io/pcs_dft_widget/help.html), and is also linked to within the app.
+* A *reproducible_pitch.Rpres* file and compiled *reproducible_pitch.hmtl* file for a brief html5 presentation on the application. This was built using RStudio Presenter, and can be accessed [here](https://aubinbannwarth.github.io/pcs_dft_widget/reproducible_pitch.html). Note that due to the assignment constraints of being less than 5 pages, this presentation cannot possibly explain the application in detail, so refer to the other links on this page where appropriate.
 

@@ -202,21 +202,64 @@ pre code {
 <p>Much of Western music uses the so-called <a href="https://en.wikipedia.org/wiki/12_equal_temperament">twelve-tone equal temperament</a>. Consider the 88 keys of the piano. Any two keys that are some multiple of 12 steps apart will have the same frequency up to some power of 2, and in music theory are identified as being essentially the same. This is because these notes are perfectly consonant and will typically serve the same harmonic or melodic function. Furthermore, the frequency ratio between any two consecutive keys is always the same, at <span class="math inline">\(2^{1/12}\)</span>.</p>
 <p>Therefore, one can identify 12 <a href="https://en.wikipedia.org/wiki/Equivalence_class">equivalence classes</a>, or <strong>pitch classes</strong>, which are traditionally given some letter and symbol for a name, such as A, B, or G#.</p>
 <p>The data scientist or mathematician will naturally want some numerical encoding for these classes. On the piano, the keys are already ordered from lowest pitch on the left, to highest on the right. Therefore, starting with C/B# = 0, we can come up with the following encoding:</p>
-<pre><code>## # A tibble: 12 x 2
-##    Class Name 
-##    &lt;dbl&gt; &lt;chr&gt;
-##  1     0 C/B# 
-##  2     1 C#/Db
-##  3     2 D    
-##  4     3 D#/Eb
-##  5     4 E/Fb 
-##  6     5 F/E# 
-##  7     6 F#/Gb
-##  8     7 G    
-##  9     8 G#/Ab
-## 10     9 A    
-## 11    10 A#/Bb
-## 12    11 B/Cb</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Class</th>
+<th align="left">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">C/B#</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">C#/Db</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="left">D</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="left">D#/Eb</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="left">E/Fb</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="left">F/E#</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="left">F#/Gb</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="left">G</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="left">G#/Ab</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="left">A</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="left">A#/Bb</td>
+</tr>
+<tr class="even">
+<td align="right">11</td>
+<td align="left">B/Cb</td>
+</tr>
+</tbody>
+</table>
 <p>We therefore see that the set of all 12 pitch classes can be naturally identified with the <a href="https://en.wikipedia.org/wiki/Cyclic_group">cyclic group</a> <span class="math inline">\(\mathbb{Z}_{12}\)</span>. A <strong>pitch class set</strong> (or PCS) <span class="math inline">\(A\)</span> is any subset of <span class="math inline">\(\mathbb{Z}_{12}\)</span>:</p>
 <p><span class="math display">\[A \subset \mathbb{Z}_{12}.\]</span> For example, the <a href="https://en.wikipedia.org/wiki/Major_chord">major chord</a> C-E-G corresponds to the following pitch class set:</p>
 <p><span class="math display">\[ A = \{0, 4, 7\}. \]</span> There are <span class="math inline">\(2^{12} = 4096\)</span> distinct possible pitch class sets <span class="math inline">\(A\)</span>.</p>
@@ -226,8 +269,8 @@ pre code {
 <p>The characteristic function <span class="math inline">\(f_A\)</span> of the pitch class set <span class="math inline">\(A\)</span> is the map:</p>
 <p><span class="math display">\[f_A: \mathbb{Z}_{12} \rightarrow \mathbb{C}: k \mapsto \begin{cases} 1, &amp; k \in  A\\ 0, &amp; k \notin A \end{cases}\]</span> It takes value 1 if <span class="math inline">\(k\)</span> is in our pitch class set, and zero otherwise. In the app, if you have selected <span class="math inline">\(A = \{0, 4, 7\}\)</span> as above, you should see that the characteristic function in the bottom left plot is exactly one at <span class="math inline">\(k \in \{0, 4, 7\}\)</span> and zero at all other integer values.</p>
 </div>
-<div id="discret-fourier-transform" class="section level2">
-<h2>Discret Fourier transform</h2>
+<div id="discrete-fourier-transform" class="section level2">
+<h2>Discrete Fourier transform</h2>
 <p>From the characteristic function <span class="math inline">\(f_A\)</span> of the pitch class set <span class="math inline">\(A\)</span>, we can compute the <strong>discrete Fourier transform</strong> (o<a href="https://en.wikipedia.org/wiki/Discrete_Fourier_transform">r DFT</a>), <span class="math inline">\(F_A\)</span>. This is another map fom <span class="math inline">\(\mathbb{Z}_{12}\)</span> to <span class="math inline">\(\mathbb{C}\)</span>, defined as follows:</p>
 <p><span class="math display">\[ F_A: \mathbb{Z}_{12} \rightarrow \mathbb{C}: x \mapsto \sum_{k \in \mathbb{Z}_{12}}f_A(k)e^{-(2i\pi kx)/12}\]</span> This allows us to then express our original characteristic function in terms of its Fourier components using the inverse Fourier transform:</p>
 <p><span class="math display">\[ f_A(k) = \frac{1}{12}\sum_{x\in\mathbb{Z}_{12}}F_A(x)e^{+(2i\pi kx)/12}.\]</span> Even though we have defined <span class="math inline">\(f_A\)</span> and <span class="math inline">\(F_A\)</span> on <span class="math inline">\(\mathbb{Z}_{12}\)</span>, we can easily extend their definition using the above expressions to the entire real line. The real parts of these extensions are shown on the plots at the bottom of the app as they illustrate the decomposition into various frequencies a lot better.</p>

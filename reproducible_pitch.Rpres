@@ -1,0 +1,68 @@
+The DFT of a Pitch Class Set
+========================================================
+author: Aubin Bannwarth
+date: 24/08/2021
+autosize: true  
+
+### A web-application for mathematical music theory  
+
+* [Visit application](https://aubinbannwarth.shinyapps.io/pcs_dft_widget/)
+
+Motivation
+========================================================
+
+* The *discrete Fourier transform*, or *DFT*,  well known to engineers, mathematicians, and anyone who has studied digital signal processing, has recently found applications in the field of music theory. 
+
+* Unfortunately, not many students of music theory will possess the mathematical or scientific programming skills involved in calculating DFTs. 
+
+* This application allows a musician to create any *pitch class set*, or *PCS*, by selecting notes on a more familiar construct, the circle of fifths, and see its DFT and characteristic function instantly.
+
+* By playing around with the app, and looking at the DFTs and characteristic functions, one can hope to find new insights into the structure of music.
+
+Implementation I
+========================================================
+<small>   
+
+* A *Notes.csv* file was prepared, with each observation representing a pitch class identified by the **Class** variable. Other variables includes the class' common musical **Name**, its order **c5_order** in the circle of fifths and the x and y coordinates of its position in the circle (**c5_x**, **c5_y**).  
+```{r}
+library(tidyverse)
+Notes <- read_csv('Notes.csv')
+```
+</small>  
+
+ ***  
+ 
+<small>
+```{r}
+kable(Notes)
+```
+
+</small>
+
+Implementation II
+========================================================
+
+<small>  
+* Using the **Notes** data set and the **ggplot** package, one can easily create a visualisation of the circle of fifths.  
+* From there, it is a simple exercise in reactive programming to transform this visualisation into an input selection device; and the **Notes** data set contains all of the information required to calculate the DFT. 
+</small>  
+
+***  
+
+<small>
+```{r, fig.width = 6, fig.asp = 0.618, out.width = "80%", fig.align = "center"}
+Notes %>% ggplot() +
+  geom_text(aes(c5_x, c5_y, label = Name)) +
+  coord_fixed() + theme_void() + xlim(-1.2, 1.2)
+```
+</small>  
+
+Further work and references
+========================================================
+
+* For the purposes of this course project, creating inputs by clicking on a reactive graph of the circle of fifths was part of the challenge, but it is not the most efficient. In the future, I may add additional input methods, such as typing in a full PCS, or selecting from a [list of existing PCS](https://en.wikipedia.org/wiki/List_of_pitch-class_sets).  
+* It could also pay to add some additional plots, such as the imaginary parts of the DFT and characteristic function, or the individual Fourier components. 
+
+* A more advanced feature could allow the calculation of the convolution of two pitch class sets, and more.
+
+* For more information, visit the app's [documentation page](https://aubinbannwarth.github.io/pcs_dft_widget/help.html).

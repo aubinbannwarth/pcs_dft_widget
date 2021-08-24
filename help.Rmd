@@ -70,7 +70,7 @@ Therefore, one can identify 12 [equivalence classes](https://en.wikipedia.org/wi
 The data scientist or mathematician will naturally want some numerical encoding for these classes. On the piano, the keys are already ordered from lowest pitch on the left, to highest on the right. Therefore, starting with C/B# = 0, we can come up with the following encoding:
 
 ```{r}
-Notes %>% select(Class, Name)
+Notes %>% select(Class, Name) %>% knitr::kable()
 ```
 
 We therefore see that the set of all 12 pitch classes can be naturally identified with the [cyclic group](https://en.wikipedia.org/wiki/Cyclic_group) $\mathbb{Z}_{12}$. A **pitch class set** (or PCS) $A$ is any subset of $\mathbb{Z}_{12}$:
