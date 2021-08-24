@@ -1,0 +1,123 @@
+---
+title: "DFT of a Pitch Class Set"
+subtitle: "Documentation"
+author: "Aubin Bannwarth"
+date: "24/08/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE)
+library(tidyverse)
+Notes <- read_csv('Notes.csv')
+```
+
+## Introduction
+
+This application is made to allow the musician with little background in mathematics to investigate the geometrical relationships between a pitch class set's characteristic function, its discrete Fourier transform, and its layout on the circle fifths.  
+
+Conversely, the mathematician or scientist with an interest in music will find a cute application of familiar techniques from digital signal processing. 
+
+The circle of fifths appears in the top left of the page: 
+```{r, fig.width = 6, fig.asp = 0.618, out.width = "70%", fig.align = "center"}
+pcs <- 77
+Notes %>% mutate(Selected = Class %in% pcs) %>%
+  ggplot() +
+  geom_text(aes(c5_x, c5_y, label = Name, color = Selected), show.legend = FALSE) +
+  coord_fixed() +
+  theme_void() +
+  xlim(-1.2, 1.2)
+```
+
+To start with, none of the notes are selected, and you will see the following message below the circle:  
+
+* **The Pitch Class Set for your selection is: {}**
+
+In the application, try clicking on the **C/B#** at the top of the circle. The note should change color, indicating that it has been selected:
+
+```{r, fig.width = 6, fig.asp = 0.618, out.width = "70%", fig.align = "center"}
+pcs <- c(0)
+
+Notes %>% mutate(Selected = Class %in% pcs) %>%
+  ggplot() +
+  geom_text(aes(c5_x, c5_y, label = Name, color = Selected), show.legend = FALSE) +
+  coord_fixed() +
+  theme_void() +
+  xlim(-1.2, 1.2)
+```
+
+The message below the circle should also now be updated to the following:  
+
+* **The Pitch Class Set for your selection is: {0}**
+
+
+This indicates that C/B# = 0 has been successfully added to your selection. You can add other notes to the set in a similar fashion by clicking on them. To start over (reset the selection to the empty set), simply double click anywhere within the circle. 
+
+Any time you update your selection, you will also see:
+
+* **In the table in the top right**: The values of the characteristic function and of the discrete Fourier transform for your selected pitch class set.  
+* **In the plot in the bottom left**: A plot (the discrete dots) of the characteristic function of the pitch class set, together with the real part of its continuous extension (line).
+* **In the plot in the bottom right**:  A plot (the discrete dots) of the real part of the discrete Fourier transform of the characteristic function, and its continuous extension (line).
+
+If you do not know what these terms mean, please read the relevant sections below and check out the linked materials for additional information. If you are not interested in music theory, you can just play around with different selections and see what that does to the two plots at the bottom of the page.
+
+## Pitch class set
+
+Much of Western music uses the so-called [twelve-tone equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament). Consider the 88 keys of the piano. Any two keys that are some multiple of 12 steps apart will have the same frequency up to some power of 2, and in music theory are identified as being essentially the same. This is because these notes are perfectly consonant and will typically serve the same harmonic or melodic function. Furthermore, the frequency ratio between any two consecutive keys is always the same, at $2^{1/12}$. 
+
+Therefore, one can identify 12 [equivalence classes](https://en.wikipedia.org/wiki/Equivalence_class), or **pitch classes**, which are traditionally given some letter and symbol for a name, such as A, B, or G#. 
+
+The data scientist or mathematician will naturally want some numerical encoding for these classes. On the piano, the keys are already ordered from lowest pitch on the left, to highest on the right. Therefore, starting with C/B# = 0, we can come up with the following encoding:
+
+```{r}
+Notes %>% select(Class, Name)
+```
+
+We therefore see that the set of all 12 pitch classes can be naturally identified with the [cyclic group](https://en.wikipedia.org/wiki/Cyclic_group) $\mathbb{Z}_{12}$. A **pitch class set** (or PCS) $A$ is any subset of $\mathbb{Z}_{12}$:
+
+$$A \subset \mathbb{Z}_{12}.$$
+For example, the [major chord](https://en.wikipedia.org/wiki/Major_chord) C-E-G corresponds to the following pitch class set:
+
+$$ A = \{0, 4, 7\}. $$
+There are $2^{12} = 4096$ distinct possible pitch class sets $A$. 
+
+## Characteristic function
+
+The characteristic function $f_A$ of the pitch class set $A$ is the map:
+
+$$f_A: \mathbb{Z}_{12} \rightarrow \mathbb{C}: k \mapsto \begin{cases} 1, & k \in  A\\ 0, & k \notin A \end{cases}$$ 
+It takes value 1 if $k$ is in our pitch class set, and zero otherwise. In the app, if you have selected $A = \{0, 4, 7\}$ as above, you should see that the characteristic function in the bottom left plot is exactly one at $k \in \{0, 4, 7\}$ and zero at all other integer values.  
+
+## Discret Fourier transform  
+
+From the characteristic function $f_A$ of the pitch class set $A$, we can compute the **discrete Fourier transform** (o[r DFT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform)), $F_A$. This is another map fom  $\mathbb{Z}_{12}$ to $\mathbb{C}$, defined as follows:
+
+$$ F_A: \mathbb{Z}_{12} \rightarrow \mathbb{C}: x \mapsto \sum_{k \in \mathbb{Z}_{12}}f_A(k)e^{-(2i\pi kx)/12}$$
+This allows us to then express our original characteristic function in terms of its Fourier components  using the inverse Fourier transform:
+
+$$ f_A(k) = \frac{1}{12}\sum_{x\in\mathbb{Z}_{12}}F_A(x)e^{+(2i\pi kx)/12}.$$
+Even though we have defined $f_A$ and $F_A$ on $\mathbb{Z}_{12}$, we can easily extend their definition using the above expressions to the entire real line. The real parts of these extensions are shown on the plots at the bottom of the app as they illustrate the decomposition into various frequencies a lot better.
+
+## The circle of fifths
+
+The [circle of fifths](https://en.wikipedia.org/wiki/Circle_of_fifths) is a well known construct in music theory, used to study harmonic movement and the relationship between different keys. Two pitch classes $k_0$ and $k_1$ are said to be a fifth apart if 
+$$k_1 - k_0 = 7 \mod 12.$$
+
+If we define $k_0 = 0$, we can then define a sequence of consecutive fifths as follows:
+
+$$k_{m+1} = (k_m + 7)\mod 12,\, m \in\{0, 10\}$$
+Note that $k_{12}=k_0$ so there's no need to go further.
+The sequence thus obtained is 
+$$(k_0, k_1, ..., k_{11}) = (0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5).$$
+
+The **circle of fifths** maps each $k_m$ to a unique position on the unit circle according to the fomula
+
+$$k_m \mapsto ie^{-(2i\pi m)/12},$$
+
+or, in terms of coordinates $(x_m, y_m)$ and real-valued functions:
+
+$$k_m \mapsto (x_m, y_m) = \left(\sin(2\pi m/12),\, \cos(2\pi  m/12)\right).$$  
+
+## Further reading
+
+In addition to the links above, you can find more info on the use of the discrete Fourier transform in music theory in [this book](https://www.springer.com/gp/book/9783319455808).

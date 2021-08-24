@@ -9,4 +9,6 @@ In this repository, you will find:
 * This *README.md* file.
 * The *ui.R* and *server.R* files that used to create the Shiny Application.
 * The *Notes.csv* data set used in the code in *server.R*.
-* A *dataset_construction.Rmd*  and compiled *dataset_construction.html* files detailing the creation of the *Notes.csv* data set. This document is visible [at this address](https://aubinbannwarth.github.io/pcs_dft_widget/dataset_construction.html).
+* A *dataset_construction.Rmd* file  and compiled *dataset_construction.html* file, detailing the creation of the *Notes.csv* data set. This document is visible [at this address](https://aubinbannwarth.github.io/pcs_dft_widget/dataset_construction.html).
+* A *help.Rmd* file  and compiled *help.html* file, providing instructions on how to use the app. This document is visible [at this address](https://aubinbannwarth.github.io/pcs_dft_widget/help.html), and is also linked to within the app.
+

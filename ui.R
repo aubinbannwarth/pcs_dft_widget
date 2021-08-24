@@ -1,8 +1,10 @@
 library(shiny)
+library(bslib)
 
 shinyUI(fluidPage(
   theme = bslib::bs_theme(bootswatch = "darkly"),
   titlePanel("Characteristic Function and Discrete Fourier Transform of a Pitch Class Set"),
+  actionButton("help", a("Help!", href = "https://aubinbannwarth.github.io/pcs_dft_widget/help.html")),
   fluidRow(
     column(8,
            h3("Click on a note on the circle of fifths to add it to your selection."),
