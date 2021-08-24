@@ -279,7 +279,7 @@ pre code {
 <h2>The circle of fifths</h2>
 <p>The <a href="https://en.wikipedia.org/wiki/Circle_of_fifths">circle of fifths</a> is a well known construct in music theory, used to study harmonic movement and the relationship between different keys. Two pitch classes <span class="math inline">\(k_0\)</span> and <span class="math inline">\(k_1\)</span> are said to be a fifth apart if <span class="math display">\[k_1 - k_0 = 7 \mod 12.\]</span></p>
 <p>If we define <span class="math inline">\(k_0 = 0\)</span>, we can then define a sequence of consecutive fifths as follows:</p>
-<p><span class="math display">\[k_{m+1} = (k_m + 7)\mod 12,\, m \in\{0, 10\}\]</span> Note that <span class="math inline">\(k_{12}=k_0\)</span> so there’s no need to go further. The sequence thus obtained is <span class="math display">\[(k_0, k_1, ..., k_{11}) = (0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5).\]</span></p>
+<p><span class="math display">\[k_{m+1} = (k_m + 7)\mod 12,\, 0\leq m \leq 10\]</span> Note that <span class="math inline">\(k_{12}=k_0\)</span> so there’s no need to go further. The sequence thus obtained is <span class="math display">\[(k_0, k_1, ..., k_{11}) = (0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5).\]</span></p>
 <p>The <strong>circle of fifths</strong> maps each <span class="math inline">\(k_m\)</span> to a unique position on the unit circle according to the fomula</p>
 <p><span class="math display">\[k_m \mapsto ie^{-(2i\pi m)/12},\]</span></p>
 <p>or, in terms of coordinates <span class="math inline">\((x_m, y_m)\)</span> and real-valued functions:</p>
